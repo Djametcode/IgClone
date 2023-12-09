@@ -2,27 +2,24 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import Entypo from "@expo/vector-icons/Entypo";
 import LoginForm from "./component/LoginForm";
-import * as Font from "expo-font";
-import { useCallback, useEffect } from "react";
-import * as SplashScreen from "expo-splash-screen";
+import {
+  useFonts,
+  Figtree_300Light_Italic,
+  Figtree_400Regular,
+} from "@expo-google-fonts/figtree";
 
 export default function App() {
-  const [fontsLoaded] = Font.useFonts({
-    "geologica-font": require("./assets/font/geologica.ttf"),
+  let [fontsLoaded, fontError] = useFonts({
+    Figtree_400Regular,
+    Figtree_300Light_Italic,
   });
 
-  const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) {
-      await SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded]);
-
-  if (!fontsLoaded) {
+  if (!fontsLoaded && !fontError) {
     return null;
   }
 
   return (
-    <View onLayout={onLayoutRootView} style={styles.container}>
+    <View style={styles.container}>
       <View
         style={{
           justifyContent: "center",
@@ -33,9 +30,8 @@ export default function App() {
         <Text
           style={{
             fontSize: 35,
-            fontWeight: "bold",
             color: "white",
-            fontFamily: "geologica-font",
+            fontFamily: "Figtree_400Regular",
           }}
         >
           Instalone
@@ -75,5 +71,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 25,
     position: "relative",
+    fontFamily: "Figtree_400Regular",
   },
 });
