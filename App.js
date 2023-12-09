@@ -2,23 +2,44 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import Entypo from "@expo/vector-icons/Entypo";
 import LoginForm from "./component/LoginForm";
-import { useFonts } from "expo-font";
+import * as Font from "expo-font";
+import { useCallback, useEffect } from "react";
+import * as SplashScreen from "expo-splash-screen";
 
 export default function App() {
+  const [fontsLoaded] = Font.useFonts({
+    "geologica-font": require("./assets/font/geologica.ttf"),
+  });
+
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
   return (
-    <View style={styles.container}>
-      <View style={{ position: "absolute", top: 215 }}>
-        <View
+    <View onLayout={onLayoutRootView} style={styles.container}>
+      <View
+        style={{
+          justifyContent: "center",
+          flexDirection: "row",
+          paddingBottom: 35,
+        }}
+      >
+        <Text
           style={{
-            justifyContent: "center",
-            flexDirection: "row",
-            paddingBottom: 35,
+            fontSize: 35,
+            fontWeight: "bold",
+            color: "white",
+            fontFamily: "geologica-font",
           }}
         >
-          <Text style={{ fontSize: 35, fontWeight: "bold", color: "white" }}>
-            Instalone
-          </Text>
-        </View>
+          Instalone
+        </Text>
       </View>
       <View>
         <LoginForm />
